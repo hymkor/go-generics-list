@@ -1,6 +1,8 @@
 package list_test
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/hymkor/go-generics-list"
@@ -12,6 +14,16 @@ func makeData(base string) *list.List[rune] { // use PushBack
 		L.PushBack(r)
 	}
 	return L
+}
+
+func showData(t *testing.T, L *list.List[rune]) {
+	var buffer strings.Builder
+	buffer.WriteString("List={")
+	for p := L.Front(); p != nil; p = p.Next() {
+		fmt.Fprintf(&buffer, " '%c'", p.Value)
+	}
+	buffer.WriteString(" }")
+	t.Log(buffer.String())
 }
 
 func TestFront(t *testing.T) {
@@ -105,7 +117,19 @@ func TestMoveAfter(t *testing.T) {
 	x := L.Front()
 	L.MoveAfter(x, z)
 	if !compareData(L, "YZX") {
-		t.Fail()
+		t.Fatal("case 1")
+	}
+
+	L = makeData("123")
+	L.MoveAfter(L.Front(), L.Front())
+	if !compareData(L, "123") {
+		showData(t, L)
+		t.Fatal("case 2")
+	}
+	L.MoveAfter(L.Back(), L.Back())
+	if !compareData(L, "123") {
+		showData(t, L)
+		t.Fatal("case 3")
 	}
 }
 

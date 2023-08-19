@@ -98,8 +98,10 @@ func (l *List[T]) remove(e *Element[T]) {
 }
 
 func (l *List[T]) MoveAfter(e, mark *Element[T]) {
-	l.remove(e)
-	l.insertAfter(e, mark)
+	if e != mark {
+		l.remove(e)
+		l.insertAfter(e, mark)
+	}
 }
 
 func (l *List[T]) MoveBefore(e, mark *Element[T]) {
