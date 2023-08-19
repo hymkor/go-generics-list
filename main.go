@@ -115,8 +115,10 @@ func (l *List[T]) MoveToBack(e *Element[T]) {
 }
 
 func (l *List[T]) MoveToFront(e *Element[T]) {
-	l.remove(e)
-	l.insertBefore(e, l.front)
+	if e.prev != nil {
+		l.remove(e)
+		l.insertBefore(e, l.front)
+	}
 }
 
 func (l *List[T]) PushBack(v T) *Element[T] {

@@ -139,6 +139,12 @@ func TestMoveToFront(t *testing.T) {
 	if !compareData(L, "CAB") {
 		t.Fail()
 	}
+
+	L = makeData("A")
+	L.MoveToFront(L.Back())
+	if !compareData(L, "A") {
+		t.Fail()
+	}
 }
 
 func TestPushBackList(t *testing.T) {
