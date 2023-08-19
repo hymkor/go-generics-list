@@ -6,7 +6,7 @@ import (
 	"github.com/hymkor/go-generics-list"
 )
 
-func makeData(base string) list.List[rune] { // use PushBack
+func makeData(base string) *list.List[rune] { // use PushBack
 	L := list.New[rune]()
 	for _, r := range base {
 		L.PushBack(r)
@@ -17,7 +17,7 @@ func makeData(base string) list.List[rune] { // use PushBack
 func TestFront(t *testing.T) {
 	L := makeData("123")
 	p := L.Front()
-	if p.IsNone() || p.Value() != '1' {
+	if p == nil || p.Value != '1' {
 		t.Fail()
 	}
 }
@@ -25,7 +25,7 @@ func TestFront(t *testing.T) {
 func TestBack(t *testing.T) {
 	L := makeData("123")
 	p := L.Back()
-	if p.IsNone() || p.Value() != '3' {
+	if p == nil || p.Value != '3' {
 		t.Fail()
 	}
 }
@@ -34,11 +34,11 @@ func TestNext(t *testing.T) {
 	L := makeData("123")
 
 	p := L.Front()
-	if p.IsNone() {
+	if p == nil {
 		t.Fail()
 	}
 	p = p.Next()
-	if p.IsNone() || p.Value() != '2' {
+	if p == nil || p.Value != '2' {
 		t.Fail()
 	}
 }
@@ -47,24 +47,38 @@ func TestPrev(t *testing.T) {
 	L := makeData("123")
 
 	p := L.Back()
-	if p.IsNone() {
+	if p == nil {
 		t.Fail()
 	}
 	p = p.Prev()
-	if p.IsNone() || p.Value() != '2' {
+	if p == nil || p.Value != '2' {
 		t.Fail()
 	}
 }
 
-func compareData(L list.List[rune], expect string) bool {
+func compareData(L *list.List[rune], expect string) bool {
 	p := L.Front()
 	for _, r := range expect {
-		if p.IsNone() || p.Value() != r {
+		if p == nil || p.Value != r {
 			return false
 		}
 		p = p.Next()
 	}
-	return p.IsNone()
+	if p != nil {
+		return false
+	}
+
+	p = L.Back()
+	for i := len(expect) - 1; i >= 0; i-- {
+		if p == nil || p.Value != rune(expect[i]) {
+			return false
+		}
+		p = p.Prev()
+	}
+	if p != nil {
+		return false
+	}
+	return L.Len() == len(expect)
 }
 
 func TestInsertBeforeAndAfter(t *testing.T) {
