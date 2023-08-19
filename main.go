@@ -105,8 +105,10 @@ func (l *List[T]) MoveAfter(e, mark *Element[T]) {
 }
 
 func (l *List[T]) MoveBefore(e, mark *Element[T]) {
-	l.remove(e)
-	l.insertBefore(e, mark)
+	if e != mark {
+		l.remove(e)
+		l.insertBefore(e, mark)
+	}
 }
 
 func (l *List[T]) MoveToBack(e *Element[T]) {

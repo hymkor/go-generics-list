@@ -140,7 +140,21 @@ func TestMoveBefore(t *testing.T) {
 	L.MoveBefore(x, z)
 	if !compareData(L, "YXZ") {
 		t.Fail()
+		t.Fatal("case 1")
 	}
+
+	L = makeData("123")
+	L.MoveBefore(L.Front(), L.Front())
+	if !compareData(L, "123") {
+		showData(t, L)
+		t.Fatal("case 2")
+	}
+	L.MoveBefore(L.Back(), L.Back())
+	if !compareData(L, "123") {
+		showData(t, L)
+		t.Fatal("case 3")
+	}
+
 }
 
 func TestMoveToBack(t *testing.T) {
