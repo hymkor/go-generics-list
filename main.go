@@ -158,8 +158,10 @@ func (l *List[T]) PushFront(v T) *Element[T] {
 }
 
 func (l *List[T]) PushFrontList(other *List[T]) {
-	for p := other.Back(); p != nil; p = p.Prev() {
+	i := other.Len()
+	for p := other.Back(); p != nil && i > 0; p = p.Prev() {
 		l.PushFront(p.Value)
+		i--
 	}
 }
 

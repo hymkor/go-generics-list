@@ -215,6 +215,13 @@ func TestPushFrontList(t *testing.T) {
 	if !compareData(L, "DEFABC") {
 		t.Fail()
 	}
+
+	L = makeData("ABC")
+	L.PushFrontList(L)
+	if !compareData(L, "ABCABC") {
+		t.Fail()
+	}
+
 }
 
 func TestRemove(t *testing.T) {
