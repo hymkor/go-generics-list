@@ -190,7 +190,13 @@ func TestPushBackList(t *testing.T) {
 	M := makeData("DEF")
 	L.PushBackList(M)
 	if !compareData(L, "ABCDEF") {
-		t.Fail()
+		t.Fatal("case 1")
+	}
+
+	L = makeData("ABC")
+	L.PushBackList(L)
+	if !compareData(L, "ABCABC") {
+		t.Fatal("case 2")
 	}
 }
 

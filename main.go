@@ -138,8 +138,10 @@ func (l *List[T]) PushBack(v T) *Element[T] {
 }
 
 func (l *List[T]) PushBackList(other *List[T]) {
-	for p := other.Front(); p != nil; p = p.Next() {
+	i := other.Len()
+	for p := other.Front(); p != nil && i > 0; p = p.Next() {
 		l.PushBack(p.Value)
+		i--
 	}
 }
 
